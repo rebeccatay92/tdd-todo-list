@@ -8,7 +8,7 @@ const todos = require('../controllers/todos_controller.js')
 // name must be at least 5 chars
 // if only name property is present, sensible defaults for description and completed
 // params contains uuid
-console.log('Testing create()')
+console.log('Testing create(params)')
 var test = {
   name: 'First Todo',
   description: 'First description',
@@ -42,7 +42,7 @@ var newParams = {
 }
 //reuse testId to update test todo object
 var updateOutput = todos.update(testId, newParams)
-assert.strictEqual(updateOutput, true, "Needs to return true if conditions are met")
+assert.ok(updateOutput, "Needs to return true if conditions are met")
 
 // normal: destroy(id) should remove the todo object from todos array
 // return true if successful, false otherwise
@@ -61,8 +61,9 @@ var test3Id = test3._id
 
 var destroyOutput = todos.destroy(test3Id)
 assert.strictEqual(todos.list().length, 2, "After destroying avocado, only banana and apple should be left")
-assert.strictEqual(destroyOutput, true, "destroy should return true if todo has been deleted")
+assert.ok(destroyOutput, "destroy should return true if todo has been deleted")
 
 //normal: destroyAll() should delete all Todos and return true
+console.log('Testing destroyAll()')
 todos.destroyAll()
 assert.strictEqual(todos.list().length, 0, "Deleting everything should leave an empty array")
