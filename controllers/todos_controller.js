@@ -19,7 +19,7 @@ function create (params) {
   if (!params.hasOwnProperty('completed')) {
     params.completed = false
   }
-  
+
   params._id = uuidGenerator()
   todos.push(params)
 }
@@ -27,10 +27,15 @@ function create (params) {
 // READ (list & show)
 function list () {
   // return list of all TODOs
-  return todos //currently an empty array of length 0
+  return todos // currently an empty array of length 0
 }
+
 function show (id) {
   // find the TODO with this id
+  var filtered = todos.filter(function(el) {
+    return el._id === id
+    })
+    return filtered[0]
 }
 
 // UPDATE - params should be an object with KVPs for the fields to update
