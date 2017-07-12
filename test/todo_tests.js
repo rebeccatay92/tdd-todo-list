@@ -127,7 +127,7 @@ assert.strictEqual(destroyFake, false, "Destroy should return false if given id 
 
 /* -------------------------------------------------- */
 
-// normal: destroyAll() should delete all Todos and return true
+//normal: destroyAll() should delete all Todos and return true
 console.log('Testing destroyAll()')
 todos.destroyAll()
 assert.strictEqual(todos.list().length, 0, 'Deleting everything should leave an empty array')
@@ -136,4 +136,5 @@ assert.strictEqual(todos.list().length, 0, 'Deleting everything should leave an 
 
 //how to save to data.json?
 //THIS VOODOO WORKS
-todos.save() //omg i deleted everything in data.json with destroyAll().
+// todos.save()
+//dont destroyAll before save!
