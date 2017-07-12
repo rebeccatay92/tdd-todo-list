@@ -13,15 +13,16 @@ const todos = []
 
 // CREATE - params should be an object with keys for name, description and completed
 function create (params) {
-  if (!params.hasOwnProperty('description')) {
-    params.description = 'Need to do ' + params.name
+  if (!params.description) {
+    params.description = 'My todo description'
   }
-  if (!params.hasOwnProperty('completed')) {
+  if (!params.completed) {
     params.completed = false
   }
 
   params._id = uuidGenerator()
   todos.push(params)
+  return params
 }
 
 // READ (list & show)
