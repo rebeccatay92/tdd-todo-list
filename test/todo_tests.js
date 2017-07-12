@@ -121,10 +121,9 @@ todos.destroy(second._id)
 var tryToFind = todos.show(second._id)
 assert.strictEqual(tryToFind, undefined, 'The second todo should not be found')
 
-// error: if id is fake, does not match, destroy should return false
+// error: if id is fake or does not match, destroy should return false
 var destroyFake = todos.destroy(fakeId)
-console.log(destroyFake)
-assert.strictEqual(destoryFake, false, "Destory should return false if given id is underfined or does not match")
+assert.strictEqual(destroyFake, false, "Destroy should return false if given id is underfined or does not match")
 /* -------------------------------------------------- */
 
 // normal: destroyAll() should delete all Todos and return true
