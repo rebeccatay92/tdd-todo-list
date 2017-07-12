@@ -55,7 +55,7 @@ assert.strictEqual(shortName, false, 'Name needs to be at least 5 chars long')
 // normal: list() should return an array of todo objects
 console.log('Testing list()')
 var todoList = todos.list()
-assert.strictEqual(todos.list().length, 3, 'List should return an array of first, second, third')
+assert.strictEqual(todos.list().length, 4, 'List should return an array of first, second, third, and 1 from save file')
 
 /* -------------------------------------------------- */
 
@@ -124,9 +124,16 @@ assert.strictEqual(tryToFind, undefined, 'The second todo should not be found')
 // error: if id is fake or does not match, destroy should return false
 var destroyFake = todos.destroy(fakeId)
 assert.strictEqual(destroyFake, false, "Destroy should return false if given id is underfined or does not match")
+
 /* -------------------------------------------------- */
 
 // normal: destroyAll() should delete all Todos and return true
 console.log('Testing destroyAll()')
 todos.destroyAll()
 assert.strictEqual(todos.list().length, 0, 'Deleting everything should leave an empty array')
+
+/* -------------------------------------------------- */
+
+//how to save to data.json?
+//THIS VOODOO WORKS
+todos.save() //omg i deleted everything in data.json with destroyAll().

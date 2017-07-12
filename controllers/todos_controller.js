@@ -1,15 +1,15 @@
 const uuidGenerator = require('uuid/v4')
 const fs = require('fs')
 
-const todos = []
+// const todos = []
 // // the following line will instead load the todos from a json file when the app starts
-// const todos = require('../data.json')
+const todos = require('../data.json')
 
 // // The following function can be used to save the todos array to the json data file
-// function save () {
-//   const json = JSON.stringify(todos)
-//   fs.writeFileSync('data.json', json, 'utf8')
-// }
+function save () {
+  const json = JSON.stringify(todos)
+  fs.writeFileSync('data.json', json, 'utf8')
+}
 
 // CREATE - params should be an object with keys for name, description and completed
 function create (params) {
@@ -33,10 +33,10 @@ function list () {
 
 function show (id) {
   // find the TODO with this id
-  var index = todos.findIndex(function (el) {
+  var index = todos.findIndex(function(el) {
     return el._id === id
   })
-  return todos[index]
+    return todos[index]
 }
 
 // UPDATE - params should be an object with KVPs for the fields to update
@@ -49,7 +49,7 @@ function update (id, params) {
     targetToChange.description = description
   }
   if (completed) {
-    if (typeof (completed) === 'boolean') {
+    if (typeof(completed) === 'boolean') {
       targetToChange.completed = completed
     } else return false
   }
@@ -60,13 +60,13 @@ function update (id, params) {
 // DESTROY (destroy & destroyAll)
 function destroy (id) {
   var targetToDestroy = show(id)
-  if (targetToDestroy) { // check if such object exist
+  if (targetToDestroy) { //check if such object exist
     todos.splice(todos.indexOf(targetToDestroy), 1)
     return true
   } else return false
 }
 
-function destroyAll () {
+function destroyAll() {
   while (todos.length > 0) {
     todos.pop()
   }
@@ -78,5 +78,6 @@ module.exports = {
   show,
   update,
   destroy,
-  destroyAll
+  destroyAll,
+  save
 }
