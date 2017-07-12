@@ -118,25 +118,24 @@ assert.strictEqual(todos.show(testId).completed, updateEverythingParams.complete
 console.log('Testing destroy(id)')
 // normal: if to do can be removed, return true
 var destroyOutput = todos.destroy(second._id)
-assert.strictEqual(destroyOutput, true, "destroy should return true if possible")
+assert.strictEqual(destroyOutput, true, 'destroy should return true if possible')
 // normal: if to do has already been removed, it should not be found
 var tryToFind = todos.show(second._id)
 assert.strictEqual(tryToFind, undefined, 'The second todo should not be found')
 
 // error: if id is fake or does not match, destroy should return false
 var destroyFake = todos.destroy(fakeId)
-assert.strictEqual(destroyFake, false, "Destroy should return false if given id is underfined or does not match")
+assert.strictEqual(destroyFake, false, 'Destroy should return false if given id is underfined or does not match')
 
 /* -------------------------------------------------- */
 
-//normal: destroyAll() should delete all Todos and return true
+// normal: destroyAll() should delete all Todos and return true
 console.log('Testing destroyAll()')
 todos.destroyAll()
 assert.strictEqual(todos.list().length, 0, 'Deleting everything should leave an empty array')
 
 /* -------------------------------------------------- */
 
-//how to save to data.json?
-//THIS VOODOO WORKS
+// dont destroyAll before save!
 // todos.save()
-//dont destroyAll before save!
+// THIS VOODOO WORKS

@@ -33,10 +33,10 @@ function list () {
 
 function show (id) {
   // find the TODO with this id
-  var index = todos.findIndex(function(el) {
+  var index = todos.findIndex(function (el) {
     return el._id === id
   })
-    return todos[index]
+  return todos[index]
 }
 
 // UPDATE - params should be an object with KVPs for the fields to update
@@ -53,7 +53,7 @@ function update (id, params) {
     targetToChange.description = description
   }
   if (completed) {
-    if (typeof(completed) === 'boolean') {
+    if (typeof (completed) === 'boolean') {
       targetToChange.completed = completed
     } else return false
   }
@@ -62,17 +62,16 @@ function update (id, params) {
 
 // DESTROY (destroy & destroyAll)
 function destroy (id) {
-  var targetToDestroy = show(id)
-  if (targetToDestroy) { //check if such object exist
-    todos.splice(todos.indexOf(targetToDestroy), 1)
-    return true
-  } else return false
+  var destroyIndex = todos.findIndex(function (el) {
+    return el._id === id
+  })
+  if (destroyIndex === -1) return false
+  todos.splice(destroyIndex, 1)
+  return true
 }
 
-function destroyAll() {
-  while (todos.length > 0) {
-    todos.pop()
-  }
+function destroyAll () {
+  todos.splice(0) // remove everything from 0 onwards
 }
 
 module.exports = {
