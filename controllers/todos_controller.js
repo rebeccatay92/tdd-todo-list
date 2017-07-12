@@ -13,13 +13,13 @@ const todos = []
 
 // CREATE - params should be an object with keys for name, description and completed
 function create (params) {
-  if (!params.description) {
+  var {name, description, completed} = params
+  if (!name) return false
+  if (name.length < 5) return false
+  if (!description || !completed) {
     params.description = 'My todo description'
-  }
-  if (!params.completed) {
     params.completed = false
   }
-
   params._id = uuidGenerator()
   todos.push(params)
   return params
@@ -33,37 +33,40 @@ function list () {
 
 function show (id) {
   // find the TODO with this id
-  var index = todos.findIndex(function(el) {
+  var index = todos.findIndex(function (el) {
     return el._id === id
   })
-    return todos[index]
+  return todos[index]
 }
 
 // UPDATE - params should be an object with KVPs for the fields to update
 function update (id, params) {
+  var {name, description, completed} = params
   var targetToChange = show(id)
-  if (params.hasOwnProperty('description')) {
-    targetToChange.description = params.description
+  if (!show(id)) return false
+  if (name.length <= 5) return false
+  if (description) {
+    targetToChange.description = description
   }
-  if (params.hasOwnProperty('completed')) {
-    targetToChange.completed = params.completed
+  if (completed) {
+    if (typeof (completed) === 'boolean') {
+      targetToChange.completed = completed
+    } else return false
   }
-  if (params.name.length > 5) {
-    targetToChange.name = params.name
-  } else return false
+  targetToChange.name = name
   return true
 }
 
 // DESTROY (destroy & destroyAll)
 function destroy (id) {
   var targetToDestroy = show(id)
-  if (targetToDestroy) { //check if such object exist
+  if (targetToDestroy) { // check if such object exist
     todos.splice(todos.indexOf(targetToDestroy), 1)
     return true
   } else return false
 }
 
-function destroyAll() {
+function destroyAll () {
   while (todos.length > 0) {
     todos.pop()
   }

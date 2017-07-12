@@ -13,8 +13,6 @@ var firstParams = {
 }
 
 var first = todos.create(firstParams)
-// name must be at least 5 chars
-assert.strictEqual(first.name.length > 5, true, 'Name needs to be at least 5 chars long')
 // normal: todo has 3 properties
 assert.ok(first.hasOwnProperty('description'), 'Each todo needs to have a description')
 assert.ok(first.hasOwnProperty('completed'), 'Each todo needs to have property called completed')
@@ -37,51 +35,99 @@ var third = todos.create(thirdParams)
 assert.ok(third.hasOwnProperty('description'), 'If only name is given, there should be a default description')
 assert.ok(third.hasOwnProperty('completed'), 'If only name is given, there should be a default completed status')
 
+// normal: cannot create if name is undefined
+var noNameParam = {
+  description: 'no name',
+  completed: false
+}
+var noName = todos.create(noNameParam)
+assert.strictEqual(noName, false, 'Create should return false if name is undefined')
+
+// normal: create should return false if name is not mroe than 5 chars
+var shortNameParam = {
+  name: 'ABC'
+}
+var shortName = todos.create(shortNameParam)
+assert.strictEqual(shortName, false, 'Name needs to be at least 5 chars long')
+
 /* -------------------------------------------------- */
 
 // normal: list() should return an array of todo objects
-// console.log('Testing list()')
-// var todoList = todos.list()
-// assert.strictEqual(todos.list().length, 1, 'List should return an array of all todos')
-//
-// // normal: show(id) should return the object with matching _id
-// console.log('Testing show(id)')
-// var testId = test._id // takes id from test object
-// var found = todos.show(testId)
-// assert.strictEqual(found._id, testId, '_id of returned object needs to match needed id')
-//
-// // normal: update(id, params) should change name, description, completed depending on updatedParams object
-// // name should be at least 5 chars
-// // returns true if successful, false otherwise
-// console.log('Testing update(id, params)')
-// var newParams = {
-//   name: 'Banana',
-//   description: 'Eat banana',
-//   completed: true
-// }
-// // reuse testId to update test todo object
-// var updateOutput = todos.update(testId, newParams)
-// assert.ok(updateOutput, 'Needs to return true if conditions are met')
-//
-// // normal: destroy(id) should remove the todo object from todos array
-// // return true if successful, false otherwise
-// console.log('Testing destroy(id)')
-// var test2 = {
-//   name: 'apple'
-// }
-// var test3 = {
-//   name: 'avocado'
-// }
-// todos.create(test2)
-// todos.create(test3)
-// // create 2 more objects. total should be 3 now
-// var test3Id = test3._id
-//
-// var destroyOutput = todos.destroy(test3Id)
-// assert.strictEqual(todos.list().length, 2, 'After destroying avocado, only banana and apple should be left')
-// assert.ok(destroyOutput, 'destroy should return true if todo has been deleted')
-//
-// // normal: destroyAll() should delete all Todos and return true
-// console.log('Testing destroyAll()')
-// todos.destroyAll()
-// assert.strictEqual(todos.list().length, 0, 'Deleting everything should leave an empty array')
+console.log('Testing list()')
+var todoList = todos.list()
+assert.strictEqual(todos.list().length, 3, 'List should return an array of first, second, third')
+
+/* -------------------------------------------------- */
+
+// normal: show(id) should return the object with matching _id
+console.log('Testing show(id)')
+var testId = first._id // takes id from first to test with
+var found = todos.show(testId)
+assert.strictEqual(found._id, testId, '_id of returned object needs to match id of first todo')
+
+/* -------------------------------------------------- */
+
+console.log('Testing update(id, params)')
+
+// normal: update should return false if non-existent/fake id is given
+var fakeId = '1234-2343-1627-1616'
+var fakeIdParams = {
+  name: 'Fake id'
+}
+var fakeIdOutput = todos.update(fakeId, fakeIdParams)
+assert.strictEqual(fakeIdOutput, false, 'update should return false if id is wrong')
+
+// normal: update(id, params) should return false if name is less than 5 chars
+var updateShortNameParams = {
+  name: 'ABC',
+  description: 'Blah blah blah',
+  completed: true
+}
+var updateShortName = todos.update(testId, updateShortNameParams)
+assert.strictEqual(updateShortName, false, 'update should return false if new name has less than 5 chars')
+
+// normal: update should return true even if description and completed is not given
+var updateNameOnlyParams = {
+  name: 'Update Name Only'
+}
+var updateNameOnly = todos.update(testId, updateNameOnlyParams)
+assert.ok(updateNameOnly, 'Needs to return true even if description and completed is missing')
+
+// error: completed param is not boolean
+var notBooleanParam = {
+  name: 'Not a boolean',
+  description: 'Blah blah blah',
+  completed: 'This is not boolean'
+}
+var notBoolean = todos.update(testId, notBooleanParam)
+assert.strictEqual(notBoolean, false, 'Update should return false if completed is not a boolean')
+
+// normal:  updating should change the property values to the new version
+var updateEverythingParams = {
+  name: 'Banana',
+  description: 'Eat this banana',
+  completed: true
+}
+var updateEverything = todos.update(testId, updateEverythingParams)
+assert.strictEqual(todos.show(testId).name, updateEverythingParams.name, 'Name needs to be updated')
+assert.strictEqual(todos.show(testId).description, updateEverythingParams.description, 'Description needs to be updated')
+assert.strictEqual(todos.show(testId).completed, updateEverythingParams.completed, 'Completed status needs to be updated')
+
+/* -------------------------------------------------- */
+
+console.log('Testing destroy(id)')
+// normal: if to do has already been removed, it should not be found
+todos.destroy(second._id)
+var tryToFind = todos.show(second._id)
+assert.strictEqual(tryToFind, undefined, 'The second todo should not be found')
+
+// error: if id is fake, does not match, destroy should return false
+var destroyFake = todos.destroy(fakeId)
+console.log(destroyFake)
+assert.strictEqual(destoryFake, false, "Destory should return false if given id is underfined or does not match")
+/* -------------------------------------------------- */
+
+// normal: destroyAll() should delete all Todos and return true
+console.log('Testing destroyAll()')
+todos.destroyAll()
+assert.strictEqual(todos.list().length, 0, 'Deleting everything should leave an empty array')
