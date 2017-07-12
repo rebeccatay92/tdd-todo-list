@@ -41,8 +41,12 @@ function show (id) {
 // UPDATE - params should be an object with KVPs for the fields to update
 function update (id, params) {
   var targetToChange = show(id)
-  targetToChange.description = params.description
-  targetToChange.completed = params.completed
+  if (params.hasOwnProperty('description')) {
+    targetToChange.description = params.description
+  }
+  if (params.hasOwnProperty('completed')) {
+    targetToChange.completed = params.completed
+  }
   if (params.name.length > 5) {
     targetToChange.name = params.name
   } else return false

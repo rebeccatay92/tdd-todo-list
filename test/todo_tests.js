@@ -17,7 +17,7 @@ var test = {
 todos.create(test)
 assert.strictEqual(test.name.length > 5, true, 'Name needs to be at least 5 chars long')
 assert.strictEqual(test.hasOwnProperty('description'), true, 'Each todo needs to have a description')
-assert.strictEqual(test.hasOwnProperty('completed'), true, 'Each todo needs to have a completed property')
+assert.strictEqual(test.hasOwnProperty('completed'), true, 'Each todo needs to have property called completed')
 assert.strictEqual(test.hasOwnProperty('_id'), true, 'Each todo needs to have a unique _id')
 
 // normal: list() should return an array of todo objects
