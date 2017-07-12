@@ -91,7 +91,7 @@ var updateNameOnlyParams = {
   name: 'Update Name Only'
 }
 var updateNameOnly = todos.update(testId, updateNameOnlyParams)
-assert.ok(updateNameOnly, 'Needs to return true even if description and completed is missing')
+assert.ok(updateNameOnly, 'Needs to return true even if description and completed are missing')
 
 // error: completed param is not boolean
 var notBooleanParam = {
@@ -116,8 +116,10 @@ assert.strictEqual(todos.show(testId).completed, updateEverythingParams.complete
 /* -------------------------------------------------- */
 
 console.log('Testing destroy(id)')
+// normal: if to do can be removed, return true
+var destroyOutput = todos.destroy(second._id)
+assert.strictEqual(destroyOutput, true, "destroy should return true if possible")
 // normal: if to do has already been removed, it should not be found
-todos.destroy(second._id)
 var tryToFind = todos.show(second._id)
 assert.strictEqual(tryToFind, undefined, 'The second todo should not be found')
 

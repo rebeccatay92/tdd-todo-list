@@ -44,7 +44,11 @@ function update (id, params) {
   var {name, description, completed} = params
   var targetToChange = show(id)
   if (!show(id)) return false
-  if (name.length <= 5) return false
+  if (name) {
+    if (!name) return false
+    if (name.length <= 5) return false
+    targetToChange.name = name
+  }
   if (description) {
     targetToChange.description = description
   }
@@ -53,7 +57,6 @@ function update (id, params) {
       targetToChange.completed = completed
     } else return false
   }
-  targetToChange.name = name
   return true
 }
 
